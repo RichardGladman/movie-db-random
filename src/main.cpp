@@ -1,7 +1,11 @@
+#include <memory>
 #include <string>
 
+#include "menu/menu.h"
+#include "menu/option.h"
 #include "util/filehandler.h"
 
+std::unique_ptr<Menu> make_main_menu();
 std::string db_filename();
 
 std::string database_name {};
@@ -10,7 +14,33 @@ int main()
 {
     database_name = db_filename();
 
+    std::unique_ptr<Menu> main_menu = make_main_menu();
+    char choice;
+
+    do {
+        main_menu->render();
+        choice = main_menu->selection();
+        
+        if (choice != 'Q') {
+            main_menu->invoke(choice);
+        }
+    } while (choice != 'Q');
+
     return 0;
+}
+
+std::unique_ptr<Menu> make_main_menu()
+{
+    std::unique_ptr<Menu> menu = std::make_unique<Menu>("Movie Database\n\nMain Menu", "Make your selection");
+
+    menu->add_option(Option('A', "Add movie", nullptr));
+    menu->add_option(Option('E', "Edit Movie", nullptr));
+    menu->add_option(Option('D', "Delete Movie", nullptr));
+    menu->add_option(Option('L', "List Movies", nullptr));
+    menu->add_option(Option('V', "View Movie Details", nullptr));
+    menu->add_option(Option('Q', "Quit", nullptr));
+
+    return menu;
 }
 
 std::string db_filename()
