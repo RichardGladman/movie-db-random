@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "model/movierecord.h"
 #include <string>
 #include <fstream>
 
@@ -13,6 +14,7 @@ public:
     static void create_data_file(std::string filename);
 
     void open(const std::string &filename);
+    void write(const MovieRecord record);
     void write(const char *data, int length, const char mode = 'A');
     void read(char *data, int length);
     void close();
