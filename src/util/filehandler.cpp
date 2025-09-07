@@ -8,6 +8,8 @@
 
 #include <iostream>
 
+extern std::string database_name;
+
 void FileHandler::create_directories(std::string path)
 {
     if (!std::filesystem::exists(path)) {
@@ -90,6 +92,30 @@ MovieRecord FileHandler::find(std::string title)
     }
 
     return MovieRecord {};
+}
+
+void FileHandler::remove(std::string title)
+{
+    FileHandler outfile;
+    FileHandler infile;
+    infile.open(database_name);
+    outfile.open(database_name.erase(database_name.length() - 11) + "__temp");
+
+    while (!infile.eof()) {
+        MovieRecord record = infile.read();
+        if (record.title.starts_with(title)) {
+            continue;
+        }
+
+        outfile.write(record);
+    }
+
+    infile.close();
+    outfile.close();
+
+    std::remove(database_name.c_str());
+    std::rename((database_name.erase(database_name.length() - 11) + "__temp").c_str(), database_name.c_str())
+
 }
 
 void FileHandler::close()

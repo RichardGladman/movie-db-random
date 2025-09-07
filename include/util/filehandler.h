@@ -19,6 +19,7 @@ public:
     MovieRecord read();
     void read(char *data, int length);
     MovieRecord find(std::string title);
+    static void remove(std::string title);
     void close();
 
     int get_pos();
