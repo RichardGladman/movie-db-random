@@ -16,6 +16,7 @@ public:
     void open(const std::string &filename);
     void write(const MovieRecord record);
     void write(const char *data, int length, const char mode = 'A');
+    MovieRecord read();
     void read(char *data, int length);
     void close();
 

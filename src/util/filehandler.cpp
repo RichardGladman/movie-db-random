@@ -55,6 +55,32 @@ void FileHandler::read(char *data, int length)
     m_file.read(data, length);
 }
 
+MovieRecord FileHandler::read()
+{
+    int record_length;
+    int title_length;
+    std::string title;
+    int format_length;
+    std::string format;
+    int certificate_length;
+    std::string certificate;
+    int rating;
+    int running_time;
+
+    m_file.read(reinterpret_cast<char*>(record_length), sizeof(int));
+    m_file.read(reinterpret_cast<char*>(title_length), sizeof(int));
+    m_file.read(title.data(), title_length);
+    m_file.read(reinterpret_cast<char*>(format_length), sizeof(int));
+    m_file.read(format.data(), format_length);
+    m_file.read(reinterpret_cast<char*>(certificate_length), sizeof(int));
+    m_file.read(certificate.data(), certificate_length);
+    m_file.read(reinterpret_cast<char*>(rating), sizeof(int));
+    m_file.read(reinterpret_cast<char*>(running_time), sizeof(int));
+
+    return MovieRecord {title, format, certificate, rating, running_time};
+
+}
+
 void FileHandler::close()
 {
     m_file.close();
