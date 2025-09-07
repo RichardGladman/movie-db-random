@@ -20,6 +20,7 @@ struct MovieRecord
     int running_time;
 
     MovieRecord(std::string title, std::string format, std::string certificate, int rating, int running_time);
+    MovieRecord();
 
     MovieModel make_model();
 };

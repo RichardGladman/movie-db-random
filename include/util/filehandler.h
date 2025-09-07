@@ -18,6 +18,7 @@ public:
     void write(const char *data, int length, const char mode = 'A');
     MovieRecord read();
     void read(char *data, int length);
+    MovieRecord find(std::string title);
     void close();
 
     int get_pos();

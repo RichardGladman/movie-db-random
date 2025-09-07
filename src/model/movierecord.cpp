@@ -18,6 +18,8 @@ MovieRecord::MovieRecord(std::string title, std::string format, std::string cert
                     certificate_length + sizeof(int) + sizeof(int);
 }
 
+MovieRecord::MovieRecord() : MovieRecord("", "", "", 0, 0) {}
+
 MovieModel MovieRecord::make_model()
 {
     return MovieModel {title, format, certificate, rating, running_time};

@@ -78,7 +78,18 @@ MovieRecord FileHandler::read()
     m_file.read(reinterpret_cast<char*>(running_time), sizeof(int));
 
     return MovieRecord {title, format, certificate, rating, running_time};
+}
 
+MovieRecord FileHandler::find(std::string title)
+{
+    while (!m_file.eof()) {
+        MovieRecord record = read();
+        if (record.title.starts_with(title)) {
+            return record;
+        }
+    }
+
+    return MovieRecord {};
 }
 
 void FileHandler::close()
