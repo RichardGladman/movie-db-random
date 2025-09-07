@@ -114,7 +114,7 @@ void FileHandler::remove(std::string title)
     outfile.close();
 
     std::remove(database_name.c_str());
-    std::rename((database_name.erase(database_name.length() - 11) + "__temp").c_str(), database_name.c_str())
+    std::rename((database_name.erase(database_name.length() - 11) + "__temp").c_str(), database_name.c_str());
 
 }
 
