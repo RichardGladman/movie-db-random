@@ -12,20 +12,26 @@ public:
     MovieModel(std::string title);
     MovieModel();
 
-    std::string get_title() const;
-    std::string get_format() const;
-    std::string get_certificate() const;
-    int get_rating() const;
-    int get_running_time() const;
+    std::string title() const;
+    std::string format() const;
+    std::string certificate() const;
+    int rating() const;
+    int running_time() const;
+
+    void title(std::string title);
+    void format(std::string format);
+    void certificate(std::string certificate);
+    void rating(int rating);
+    void running_time(int running_time);
 
     void save();
 
 private:
-    std::string title;
-    std::string format;
-    std::string certificate;
-    int rating;
-    int running_time;
+    std::string m_title;
+    std::string m_format;
+    std::string m_certificate;
+    int m_rating;
+    int m_running_time;
 };
 
 #endif
