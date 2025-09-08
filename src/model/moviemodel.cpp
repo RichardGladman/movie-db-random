@@ -2,6 +2,10 @@
 // Created by richard on 07.09.2025 
 //
 #include "model/moviemodel.h"
+#include "model/movierecord.h"
+#include "util/filehandler.h"
+
+extern std::string database_name;
 
 MovieModel::MovieModel(std::string title, std::string format, std::string certificate, int rating, int running_time):
     title {title}, format {format}, certificate {certificate}, rating {rating}, running_time {running_time}
@@ -44,3 +48,13 @@ int MovieModel::get_running_time() const
     return running_time;
 }
 
+void MovieModel::save()
+{
+    FileHandler file {};
+    file.open(database_name);
+
+    MovieRecord record {title, format, certificate, rating, running_time};
+    file.write(record);
+
+    file.close();
+}

@@ -18,6 +18,8 @@ public:
     int get_rating() const;
     int get_running_time() const;
 
+    void save();
+
 private:
     std::string title;
     std::string format;
