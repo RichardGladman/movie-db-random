@@ -25,6 +25,8 @@ public:
     void running_time(int running_time);
 
     void save();
+    static MovieModel load(std::string title);
+    static void remove(std::string title);
 
 private:
     std::string m_title;

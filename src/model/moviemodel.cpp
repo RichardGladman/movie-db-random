@@ -83,3 +83,30 @@ void MovieModel::save()
     file.write(record);
     file.close();
 }
+
+MovieModel MovieModel::load(std::string title)
+{
+    FileHandler file {};
+    MovieModel model {};
+
+    file.open(database_name);
+
+    MovieRecord record = file.find(title);
+    if (record.title.starts_with(title)) {
+        model.m_title = record.title;
+        model.m_format = record.format;
+        model.m_certificate = record.certificate;
+        model.m_rating = record.rating;
+        model.m_running_time = record.running_time;
+    }
+
+    return model;
+}
+
+void MovieModel::remove(std::string title)
+{
+    FileHandler file {};
+    file.open(database_name);
+    file.remove(title);
+    file.close();
+}

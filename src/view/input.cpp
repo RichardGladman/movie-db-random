@@ -28,13 +28,23 @@ std::string Input::get_text(const std::string &prompt, const int min_len, const 
 
 int Input::get_integer(const std::string &prompt, const int default_value)
 {
+    std::string in {};
     int number {};
 
-    Output::plain_text(prompt + ": ");
-    std::cin >> number;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
-    std::cin.clear();
-    
+    do {
+        Output::plain_text(prompt + ": ");
+        std::getline(std::cin, in);
+
+        try {
+            number = in.length() > 0 ? std::stoi(in) : default_value;
+            break;
+        } catch (std::invalid_argument e) {
+            Output::error_message("Error: Non-numeric input for number");
+        } catch (std::out_of_range e) {
+            Output::error_message("Error: Number too large");
+        }
+    } while(true);
+
     return number;
 }
 

@@ -8,6 +8,8 @@
 
 #include <iostream>
 
+#include "view/output.h"
+
 extern std::string database_name;
 
 void FileHandler::create_directories(std::string path)
@@ -69,28 +71,47 @@ MovieRecord FileHandler::read()
     int rating;
     int running_time;
 
-    m_file.read(reinterpret_cast<char*>(record_length), sizeof(int));
-    m_file.read(reinterpret_cast<char*>(title_length), sizeof(int));
-    m_file.read(title.data(), title_length);
-    m_file.read(reinterpret_cast<char*>(format_length), sizeof(int));
-    m_file.read(format.data(), format_length);
-    m_file.read(reinterpret_cast<char*>(certificate_length), sizeof(int));
-    m_file.read(certificate.data(), certificate_length);
-    m_file.read(reinterpret_cast<char*>(rating), sizeof(int));
-    m_file.read(reinterpret_cast<char*>(running_time), sizeof(int));
+    m_file.read(reinterpret_cast<char*>(&record_length), sizeof(int));
+    if (!m_file.eof()) {
+        m_file.read(reinterpret_cast<char*>(&title_length), sizeof(int));
 
-    return MovieRecord {title, format, certificate, rating, running_time};
+        char t[title_length + 1];
+        m_file.read(reinterpret_cast<char*>(&t), title_length);
+        t[title_length] = '\0';
+        title = t;
+
+        m_file.read(reinterpret_cast<char*>(&format_length), sizeof(int));
+
+        char f[format_length+1];
+        m_file.read(reinterpret_cast<char*>(&f), format_length);
+        f[format_length] = '\0';
+        format = f;
+
+        m_file.read(reinterpret_cast<char*>(&certificate_length), sizeof(int));
+        char c[certificate_length + 1];
+        m_file.read(reinterpret_cast<char*>(&c), certificate_length);
+        c[certificate_length] = '\0';
+        certificate = c;
+
+        m_file.read(reinterpret_cast<char*>(&rating), sizeof(int));
+        m_file.read(reinterpret_cast<char*>(&running_time), sizeof(int));
+
+        return MovieRecord {title, format, certificate, rating, running_time};
+    }
+
+    return MovieRecord { "", "", "", 0, 0 };
 }
 
 MovieRecord FileHandler::find(std::string title)
 {
+    m_file.seekg(0, std::ios::beg);
     while (!m_file.eof()) {
         MovieRecord record = read();
         if (record.title.starts_with(title)) {
             return record;
         }
     }
-
+    
     return MovieRecord {};
 }
 
@@ -99,22 +120,25 @@ void FileHandler::remove(std::string title)
     FileHandler outfile;
     FileHandler infile;
     infile.open(database_name);
-    outfile.open(database_name.erase(database_name.length() - 11) + "__temp");
-
+    FileHandler::create_data_file(database_name + "__temp");
+    outfile.open(database_name + "__temp");
+    
     while (!infile.eof()) {
         MovieRecord record = infile.read();
-        if (record.title.starts_with(title)) {
-            continue;
+        if (!infile.eof()) {
+            if (record.title.starts_with(title)) {
+                continue;
+            }
+            
+            outfile.write(record);
         }
-
-        outfile.write(record);
     }
-
-    infile.close();
+    
     outfile.close();
-
+    infile.close();
+    
     std::remove(database_name.c_str());
-    std::rename((database_name.erase(database_name.length() - 11) + "__temp").c_str(), database_name.c_str());
+    std::filesystem::rename((database_name + "__temp").c_str(), database_name.c_str());
 
 }
 
