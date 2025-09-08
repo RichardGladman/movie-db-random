@@ -42,7 +42,10 @@ std::unique_ptr<Menu> make_main_menu()
         MovieController controller = MovieController();
         controller.edit();
     }));
-    menu->add_option(Option('D', "Delete Movie", nullptr));
+    menu->add_option(Option('D', "Delete Movie", []() {
+        MovieController controller;
+        controller.remove();
+    }));
     menu->add_option(Option('L', "List Movies", nullptr));
     menu->add_option(Option('V', "View Movie Details", nullptr));
     menu->add_option(Option('Q', "Quit", nullptr));

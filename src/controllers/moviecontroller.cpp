@@ -33,7 +33,7 @@ void MovieController::edit()
     MovieModel model = MovieModel::load(title);
 
     if (model.title() == "") {
-        Output::error_message("THat title was not found");
+        Output::error_message("That title was not found");
         return;
     }
 
@@ -47,4 +47,19 @@ void MovieController::edit()
     model.save();
 
     Output::success_message("Movie has been updated");
+}
+
+void MovieController::remove()
+{
+    std::string title = Input::get_text("Enter title to delete");
+    MovieModel model = MovieModel::load(title);
+
+    if (model.title() == "") {
+        Output::error_message("That title was not found");
+        return;
+    }
+
+    MovieModel::remove(title);
+
+    Output::success_message("Movie has been deleted");
 }
