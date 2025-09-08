@@ -27,7 +27,7 @@ public:
 
 
 private:
-    std::fstream m_file;
+    std::fstream m_file {};
 };
 
 #endif

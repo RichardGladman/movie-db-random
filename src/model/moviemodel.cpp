@@ -13,12 +13,12 @@ MovieModel::MovieModel(std::string title, std::string format, std::string certif
 
 }
 
-MovieModel::MovieModel(std::string title): MovieModel {title, "", "0""", 0, 0}
+MovieModel::MovieModel(std::string title): MovieModel {title, "", "", 0, 0}
 {
 
 }
 
-MovieModel::MovieModel(): MovieModel {"", "", "0""", 0, 0}
+MovieModel::MovieModel(): MovieModel {"", "", "", 0, 0}
 {
 
 }
@@ -79,7 +79,7 @@ void MovieModel::save()
     file.open(database_name);
 
     MovieRecord record {m_title, m_format, m_certificate, m_rating, m_running_time};
-    file.write(record);
 
+    file.write(record);
     file.close();
 }
