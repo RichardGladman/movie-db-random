@@ -39,11 +39,13 @@ void MovieController::edit()
         return;
     }
 
-    model.title(Input::get_text("Enter new title (blank for current) [" + model.title() + "]"));
-    model.format(Input::get_text("Enter new format (blank for current) [" + model.format() + "]"));
-    model.certificate(Input::get_text("Enter new certificate (blank for current) [" + model.certificate() + "]"));
-    model.rating(Input::get_integer("Enter new rating (blank for current) [" + std::to_string(model.rating()) + "]"));
-    model.running_time(Input::get_integer("Enter new running time (blank for current) [" + std::to_string(model.running_time()) + "]"));
+    model.title(Input::get_text("Enter new title (blank for current) [" + model.title() + "]", 0, model.title()));
+    model.format(Input::get_text("Enter new format (blank for current) [" + model.format() + "]", 0, model.format()));
+    model.certificate(Input::get_text("Enter new certificate (blank for current) [" + model.certificate() + "]", 0, model.certificate()));
+    model.rating(Input::get_integer("Enter new rating (blank for current) [" + std::to_string(model.rating()) + "]", model.rating()));
+    model.running_time(Input::get_integer(
+        "Enter new running time (blank for current) [" + std::to_string(model.running_time()) + "]", model.running_time()
+    ));
 
     MovieModel::remove(title);
     model.save();
