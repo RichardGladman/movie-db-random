@@ -4,10 +4,13 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 class MovieModel
 {
 public:
+    static std::vector<MovieModel> all();
+
     MovieModel(std::string title, std::string format, std::string certificate, int rating, int running_time);
     MovieModel(std::string title);
     MovieModel();
@@ -27,6 +30,8 @@ public:
     void save();
     static MovieModel load(std::string title);
     static void remove(std::string title);
+
+    void print();
 
 private:
     std::string m_title;

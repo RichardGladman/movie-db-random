@@ -5,8 +5,10 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "model/moviemodel.h"
+#include "util/text.h"
 #include "view/input.h"
 #include "view/output.h"
 
@@ -62,4 +64,32 @@ void MovieController::remove()
     MovieModel::remove(title);
 
     Output::success_message("Movie has been deleted");
+}
+
+void MovieController::list()
+{
+    std::string data {};
+
+    data = "Title" + Text::spaces(50, 5);
+    data += "Format" + Text::spaces(10, 6);
+    data += "Cert" + Text::spaces(10, 4);
+    data += "Rtng";
+    data += Text::spaces(3, 0) + "Run";
+
+    std::string header = Text::header_line();
+
+    Output::plain_text(header, true);
+    Output::plain_text(data, true);
+    Output::plain_text(header, true);
+
+    std::vector<MovieModel> movies = MovieModel::all();
+
+    for (MovieModel &movie: movies) {
+        movie.print();
+    }
+
+    Output::plain_text(header);
+
+
+
 }

@@ -10,7 +10,6 @@ public:
     void edit();
     void remove();
     void list();
-    void details();
 };
 
 #endif

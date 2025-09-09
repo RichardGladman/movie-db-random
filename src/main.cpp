@@ -46,7 +46,10 @@ std::unique_ptr<Menu> make_main_menu()
         MovieController controller;
         controller.remove();
     }));
-    menu->add_option(Option('L', "List Movies", nullptr));
+    menu->add_option(Option('L', "List Movies", [](){
+        MovieController controller;
+        controller.list();
+    }));
     menu->add_option(Option('Q', "Quit", nullptr));
 
     return menu;

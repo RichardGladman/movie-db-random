@@ -1,11 +1,31 @@
-//
-// Created by richard on 07.09.2025 
-//
 #include "model/moviemodel.h"
 #include "model/movierecord.h"
 #include "util/filehandler.h"
+#include "util/text.h"
+#include "view/output.h"
+#include <string>
 
 extern std::string database_name;
+
+std::vector<MovieModel> MovieModel::all()
+{
+    std::vector<MovieModel> movies {};
+    FileHandler file;
+
+    file.open(database_name);
+
+    while (!file.eof()) {
+        MovieRecord record = file.read();
+        if (!file.eof()) {
+            MovieModel model {record.title, record.format, record.certificate, record.rating, record.running_time};
+            movies.push_back(model);
+        }
+    }
+
+    file.close();
+
+    return movies;
+}
 
 MovieModel::MovieModel(std::string title, std::string format, std::string certificate, int rating, int running_time):
     m_title {title}, m_format {format}, m_certificate {certificate}, m_rating {rating}, m_running_time {running_time}
@@ -109,4 +129,17 @@ void MovieModel::remove(std::string title)
     file.open(database_name);
     file.remove(title);
     file.close();
+}
+
+void MovieModel::print()
+{
+    std::string data {};
+
+    data = m_title + Text::spaces(50, m_title.length());
+    data += m_format + Text::spaces(10, m_format.length());
+    data += m_certificate + Text::spaces(10, m_certificate.length());
+    data += Text::spaces(4, 0) + std::to_string(m_rating);
+    data += Text::spaces(3, 0) + std::to_string(m_running_time);
+
+    Output::plain_text(data, true);
 }
